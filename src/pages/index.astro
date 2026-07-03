@@ -1,0 +1,120 @@
+---
+// Ollima marketing landing page. Static — no backend, no product code here.
+const models = [
+  { name: "Kimi K2", id: "kimi-2.7", note: "long-context agentic coder" },
+  { name: "DeepSeek V4", id: "deepseek-v4", note: "strong general coder" },
+  { name: "DeepSeek V4 Flash", id: "deepseek-v4-flash", note: "fast + cheap" },
+  { name: "Qwen3 Coder", id: "qwen3-coder-next", note: "autocomplete / fill-in-middle" },
+  { name: "GLM 5.2", id: "glm-5.2", note: "alternative coder" },
+  { name: "GPT-4o mini / GPT-5", id: "gpt-4o-mini", note: "OpenAI models" },
+];
+const tools = ["Cline", "Aider", "Cursor", "Continue", "LangChain", "Open WebUI"];
+const APP = "https://app.ollima.com";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ollima — one API for the best coding models</title>
+    <meta
+      name="description"
+      content="Ollima is an OpenAI-compatible router for top coding models. Use them from any tool — Cline, Aider, Cursor, or your own code — with one key."
+    />
+    <style>
+      :root {
+        --bg: #0b0d12; --card: #141821; --line: #232838;
+        --ink: #e8ecf4; --dim: #97a1b4; --acc: #5b8cff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--bg); color: var(--ink);
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+      header { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+      .logo { font-weight: 700; letter-spacing: -0.02em; font-size: 20px; }
+      .btn {
+        display: inline-block; background: var(--acc); color: #fff; text-decoration: none;
+        padding: 10px 18px; border-radius: 8px; font-weight: 600;
+      }
+      .btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+      .hero { padding: 64px 0 40px; text-align: center; }
+      .hero h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 16px; }
+      .hero p { font-size: 20px; color: var(--dim); max-width: 640px; margin: 0 auto 28px; }
+      .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+      section { padding: 40px 0; border-top: 1px solid var(--line); }
+      h2 { font-size: 26px; letter-spacing: -0.02em; margin: 0 0 20px; }
+      .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+      .card .id { color: var(--acc); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      .card .note { color: var(--dim); font-size: 14px; }
+      pre {
+        background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+        padding: 18px; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px;
+      }
+      .pill { display: inline-block; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; margin: 4px; color: var(--dim); }
+      footer { padding: 40px 0; color: var(--dim); font-size: 14px; border-top: 1px solid var(--line); }
+      a { color: var(--acc); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <span class="logo">Ollima</span>
+        <a class="btn ghost" href={APP}>Sign in</a>
+      </header>
+
+      <div class="hero">
+        <h1>One API for the best coding models.</h1>
+        <p>
+          Ollima is an OpenAI-compatible router. Point any tool — Cline, Aider,
+          Cursor, or your own code — at one endpoint and one key.
+        </p>
+        <div class="cta">
+          <a class="btn" href={APP}>Get an API key</a>
+          <a class="btn ghost" href="#quickstart">Read the docs</a>
+        </div>
+      </div>
+
+      <section id="models">
+        <h2>Models</h2>
+        <div class="grid">
+          {models.map((m) => (
+            <div class="card">
+              <div><strong>{m.name}</strong></div>
+              <div class="id">{m.id}</div>
+              <div class="note">{m.note}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="quickstart">
+        <h2>Use it anywhere</h2>
+        <p style="color:var(--dim)">Any OpenAI-compatible tool works — set the base URL and your key:</p>
+        <pre>{`from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.ollima.com/v1",
+    api_key="sk-t0-...",   # from ${'https://app.ollima.com'}
+)
+
+r = client.chat.completions.create(
+    model="deepseek-v4",
+    messages=[{"role": "user", "content": "Write a binary search in Python."}],
+)
+print(r.choices[0].message.content)`}</pre>
+        <div style="margin-top:16px">
+          {tools.map((t) => <span class="pill">{t}</span>)}
+        </div>
+      </section>
+
+      <footer>
+        <div>© Ollima. Built for developers.</div>
+        <div style="margin-top:8px"><a href={APP}>Dashboard</a> · <a href="https://api.ollima.com/v1/models">API</a></div>
+      </footer>
+    </div>
+  </body>
+</html>
